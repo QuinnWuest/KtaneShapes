@@ -2,7 +2,6 @@
 using System.Linq;
 using UnityEngine;
 using Syl;
-using System;
 using System.Collections;
 
 public class ShapesScript : MonoBehaviour
@@ -22,36 +21,35 @@ public class ShapesScript : MonoBehaviour
     private static int _moduleIdCounter = 1;
     private bool _moduleSolved;
 
-
-    private readonly Dictionary<Sound, ConsonantInfo> _consonantInfos = new Dictionary<Sound, ConsonantInfo>()
+    private static readonly Dictionary<Sound, ConsonantInfo> _consonantInfos = new Dictionary<Sound, ConsonantInfo>()
     {
-        [Sound.None] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 14, 45),
-        [Sound.B] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 2, 0),
-        [Sound.P] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 2, 180),
-        [Sound.G] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .002f), new Vector3(.000f, .0015f, -.003f), 16, 0),
-        [Sound.K] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .003f), new Vector3(.000f, .0015f, -.002f), 16, 180),
-        [Sound.D] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 3, 0),
-        [Sound.T] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 4, 0),
-        [Sound.F] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .0025f), new Vector3(.0025f, .0015f, -.0025f), 9, 0),
-        [Sound.V] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(.0025f, .0015f, .0025f), new Vector3(-.0025f, .0015f, -.0025f), 9, 90),
-        [Sound.S] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(.0025f, .0015f, .0025f), new Vector3(-.0025f, .0015f, -.0025f), 24, 0),
-        [Sound.Z] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .0025f), new Vector3(.0025f, .0015f, -.0025f), 24, 90),
+        [Sound.P] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 2, 0),
+        [Sound.B] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 2, 180),
+        [Sound.K] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .002f), new Vector3(.000f, .0015f, -.003f), 16, 0),
+        [Sound.G] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .003f), new Vector3(.000f, .0015f, -.002f), 16, 180),
+        [Sound.T] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 3, 0),
+        [Sound.D] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 4, 0),
+        [Sound.TH] = new ConsonantInfo(new Vector3(-0.00325f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .003f), new Vector3(-.002f, .0015f, -.003f), 19, 0),
+        [Sound.DH] = new ConsonantInfo(new Vector3(0.00325f, .0015f, 0.000f), new Vector3(.002f, .0015f, .003f), new Vector3(.002f, .0015f, -.003f), 19, 180),
         [Sound.SH] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.003f, .0015f, -.0015f), new Vector3(.003f, .0015f, -.0015f), 5, 0),
         [Sound.ZH] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.003f, .0015f, .0025f), new Vector3(.003f, .0015f, .0025f), 6, 0),
-        [Sound.TH] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0035f, .0015f, -.0015f), new Vector3(.0035f, .0015f, -.0015f), 7, 0),
-        [Sound.DH] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 8, 0),
-        [Sound.CH] = new ConsonantInfo(new Vector3(0.0025f, .0015f, 0.000f), new Vector3(.002f, .0015f, .003f), new Vector3(.002f, .0015f, -.003f), 19, 0),
-        [Sound.J] = new ConsonantInfo(new Vector3(-0.0025f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .003f), new Vector3(-.002f, .0015f, -.003f), 19, 180),
-        [Sound.H] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(.000f, .0015f, .003f), new Vector3(.000f, .0015f, -.003f), 17, 0),
+        [Sound.CH] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0035f, .0015f, -.0015f), new Vector3(.0035f, .0015f, -.0015f), 7, 0),
+        [Sound.J] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 8, 0),
+        [Sound.F] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(.0025f, .0015f, .0025f), new Vector3(-.0025f, .0015f, -.0025f), 9, 0),
+        [Sound.V] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .0025f), new Vector3(.0025f, .0015f, -.0025f), 9, 90),
+        [Sound.S] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(.0025f, .0015f, .0025f), new Vector3(-.0025f, .0015f, -.0025f), 24, 90),
+        [Sound.Z] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .0025f), new Vector3(.0025f, .0015f, -.0025f), 24, 0),
+        [Sound.H] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .001f), new Vector3(.0025f, .0015f, .001f), 20, 0),
         [Sound.M] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 11, 0),
-        [Sound.N] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .001f), new Vector3(.0025f, .0015f, .001f), 12, 0),
+        [Sound.N] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 12, 0),
         [Sound.NG] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 13, 0),
         [Sound.L] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .000f), new Vector3(.0025f, .0015f, -.000f), 15, 270),
         [Sound.R] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.0025f, .0015f, .000f), new Vector3(.0025f, .0015f, -.000f), 15, 90),
         [Sound.W] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 15, 0),
-        [Sound.Y] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 15, 180)
+        [Sound.Y] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.000f, .0015f, .0025f), new Vector3(.000f, .0015f, -.0025f), 15, 180),
+        [Sound.None] = new ConsonantInfo(new Vector3(0.000f, .0015f, 0.000f), new Vector3(-.002f, .0015f, .002f), new Vector3(.002f, .0015f, -.002f), 14, 45),
     };
-    private readonly Dictionary<Sound, Color32> _vowelInfos = new Dictionary<Sound, Color32>()
+    private static readonly Dictionary<Sound, Color32> _vowelInfos = new Dictionary<Sound, Color32>()
     {
         [Sound.I] = new Color32(220, 20, 60, 255),
         [Sound.II] = new Color32(77, 166, 255, 255),
@@ -59,67 +57,118 @@ public class ShapesScript : MonoBehaviour
         [Sound.A] = new Color32(255, 140, 0, 255),
         [Sound.AA] = new Color32(139, 0, 0, 255),
         [Sound.O] = new Color32(34, 139, 34, 255),
-        [Sound.U] = new Color32(75, 0, 130, 255),
+        [Sound.U] = new Color32(60, 60, 240, 255),
         [Sound.OO] = new Color32(0, 128, 128, 255),
-        [Sound.Ə] = new Color32(255, 105, 180, 255),
+        [Sound.Ə] = new Color32(255, 137, 212, 255),
         [Sound.AI] = new Color32(255, 0, 255, 255),
-        [Sound.AU] = new Color32(255, 191, 0, 255),
+        [Sound.AU] = new Color32(80, 235, 215, 255),
         [Sound.OI] = new Color32(138, 43, 226, 255),
-        [Sound.OU] = new Color32(139, 69, 19, 255),
+        [Sound.OU] = new Color32(200, 170, 130, 255),
         [Sound.EI] = new Color32(50, 205, 50, 255)
     };
 
-    KeyValuePair<string, Syllable[]> _chosenWord;
+    private static readonly Dictionary<Sound, string[]> _infoForLogging = new Dictionary<Sound, string[]>()
+    {
+        [Sound.P] = new[] { "up-pointing pentagon", "an up-pointing pentagon" },
+        [Sound.B] = new[] { "down-pointing pentagon", "a down-pointing pentagon" },
+        [Sound.K] = new[] { "upright kite", "an upright kite" },
+        [Sound.G] = new[] { "upside-down kite", "an upside-down kite" },
+        [Sound.T] = new[] { "hexagon", "a hexagon" },
+        [Sound.D] = new[] { "octagon", "an octagon" },
+        [Sound.TH] = new[] { "Pac-Man facing right", "a Pac-Man facing right" },
+        [Sound.DH] = new[] { "Pac-Man facing left", "a Pac-Man facing left" },
+        [Sound.SH] = new[] { "spade", "a spade" },
+        [Sound.ZH] = new[] { "heart", "a heart" },
+        [Sound.CH] = new[] { "club", "a club" },
+        [Sound.J] = new[] { "diamond", "a diamond" },
+        [Sound.F] = new[] { "top-right and bottom-left circle pair", "a top-right and bottom-left circle pair" },
+        [Sound.V] = new[] { "top-left and bottom-right circle pair", "a top-left and bottom-right circle pair" },
+        [Sound.S] = new[] { "top-right and bottom-left square pair", "a top-right and bottom-left square pair" },
+        [Sound.Z] = new[] { "top-left and bottom-right square pair", "a top-left and bottom-right square pair" },
+        [Sound.H] = new[] { "speech bubble", "a speech bubble" },
+        [Sound.M] = new[] { "4-pointed star", "a 4-pointed star" },
+        [Sound.N] = new[] { "5-pointed star", "a 5-pointed star" },
+        [Sound.NG] = new[] { "6-pointed star", "a 6-pointed star" },
+        [Sound.L] = new[] { "left arrow", "a left arrow" },
+        [Sound.R] = new[] { "right arrow", "a right arrow" },
+        [Sound.W] = new[] { "up arrow", "an up arrow" },
+        [Sound.Y] = new[] { "down arrow", "a down arrow" },
+        [Sound.None] = new[] { "X", "an X" },
+        [Sound.I] = new[] { "a red" },
+        [Sound.II] = new[] { "a sky blue" },
+        [Sound.E] = new[] { "a yellow" },
+        [Sound.A] = new[] { "an orange" },
+        [Sound.AA] = new[] { "a maroon" },
+        [Sound.O] = new[] { "a green" },
+        [Sound.U] = new[] { "a blue" },
+        [Sound.OO] = new[] { "a teal" },
+        [Sound.Ə] = new[] { "a pink" },
+        [Sound.AI] = new[] { "a magenta" },
+        [Sound.AU] = new[] { "a cyan" },
+        [Sound.OI] = new[] { "a purple" },
+        [Sound.OU] = new[] { "a tan" },
+        [Sound.EI] = new[] { "a lime" },
+    };
+    private static readonly string[] _ordinals = new string[] { "first", "second", "third", "fourth" };
 
+    private KeyValuePair<string, Syllable[]> _chosenWord;
     private string _strInput = "";
     private List<int> _input = new List<int>();
     private Coroutine _timer;
+    private Coroutine _textAnimation;
     private int _buttonCount;
 
     private void Awake()
     {
         _moduleId = _moduleIdCounter++;
-
         _chosenWord = Data._wordList.PickRandom();
 
-        var tempStr = "TEAMMATE";
-        var x = new KeyValuePair<string, Syllable[]>(tempStr, Data._wordList[tempStr]);
-        _chosenWord = x;
+        if (false)
+        {
+            var tempStr = "PICTURED";
+            var x = new KeyValuePair<string, Syllable[]>(tempStr, Data._wordList[tempStr]);
+            _chosenWord = x;
+        }
 
-        SetButtons(_chosenWord.Value);
         _buttonCount = _chosenWord.Value.Length;
-        Debug.LogFormat("[Module Name #{0}] Chosen word: {1}", _moduleId, _chosenWord.Key);
-        Debug.LogFormat("[Module Name #{0}] Syllables: {1}", _moduleId, _chosenWord.Value.Join(" "));
+
+        var syllables = _chosenWord.Value;
+        SetButtons(syllables);
+        // Debug.LogFormat("[Shapes #{0}] Chosen word: {1}", _moduleId, _chosenWord.Key);
+        // Debug.LogFormat("[Shapes #{0}] Syllables: {1}", _moduleId, _chosenWord.Value.Join(" "));
+
+        for (int i = 0; i < syllables.Length; i++)
+        {
+            Debug.Log($"[Shapes #{_moduleId}] The {_ordinals[i]} button is {_infoForLogging[syllables[i].Nucleus][0]} {_infoForLogging[syllables[i].Onset][0]}{(syllables[i].Coda.Length == 0 ? "" : $" with {syllables[i].Coda.Select(x => _infoForLogging[x][1]).Join(" and ")} on it")}.");
+        }
 
         LetterTM.text = "";
-
         for (int i = 0; i < _buttonCount; i++)
             ButtonSels[i].OnInteract += ButtonPress(i);
     }
 
+
     private void SetButtons(Syllable[] syllableInfo)
     {
-        int buttonCount = syllableInfo.Length;
-        var children = Enumerable.Range(0, buttonCount).Select(i => ButtonSels[i]).ToArray();
-        ModuleSelectable.Children = children;
+        ModuleSelectable.Children = Enumerable.Range(0, _buttonCount).Select(i => ButtonSels[i]).ToArray();
         ModuleSelectable.UpdateChildrenProperly();
         for (int i = 3; i >= 0; i--)
-            if (i >= buttonCount)
+            if (i >= _buttonCount)
                 ButtonObjs[i].SetActive(false);
 
-        if (buttonCount == 2)
+        if (_buttonCount == 2)
             for (int ix = 0; ix < 2; ix++)
             {
                 ButtonObjs[ix].transform.localPosition = new Vector3(ix * 0.06f - 0.03f, 0.02f, ix * -0.06f + 0.03f);
                 ButtonObjs[ix].transform.localScale = new Vector3(4, 4, 4);
             }
-        else if (buttonCount == 3)
+        else if (_buttonCount == 3)
             for (int ix = 0; ix < 3; ix++)
             {
                 ButtonObjs[ix].transform.localPosition = new Vector3((ix == 0) ? 0f : (ix - 1.5f) * 0.08f, 0.02f, (ix > 0 ? -1f : 1f) * 0.035f);
                 ButtonObjs[ix].transform.localScale = new Vector3(4, 4, 4);
             }
-        else if (buttonCount == 4)
+        else if (_buttonCount == 4)
             for (int ix = 0; ix < 4; ix++)
             {
                 ButtonObjs[ix].transform.localPosition = new Vector3((ix == 0 || ix == 3) ? 0f : (ix == 1 ? -0.045f : 0.045f), 0.02f, (ix == 0) ? 0.045f : (ix == 3 ? -0.045f : 0f));
@@ -129,8 +178,8 @@ public class ShapesScript : MonoBehaviour
         for (int i = 0; i < syllableInfo.Length; i++)
         {
             var onset = syllableInfo[i].Onset;
-            ButtonObjs[i].transform.GetChild(0).GetComponent<MeshFilter>().mesh = ModelMeshes[_consonantInfos[onset].MeshIx];
-            ButtonObjs[i].transform.GetChild(0).localEulerAngles = new Vector3(90f, _consonantInfos[onset].Rotation, 0f);
+            ButtonObjs[i].transform.GetChild(1).GetComponent<MeshFilter>().mesh = ModelMeshes[_consonantInfos[onset].MeshIx];
+            ButtonObjs[i].transform.GetChild(1).localEulerAngles = new Vector3(90f, _consonantInfos[onset].Rotation, 0f);
             var coda = syllableInfo[i].Coda;
             if (coda.Length == 0)
             {
@@ -141,6 +190,7 @@ public class ShapesScript : MonoBehaviour
             else if (coda.Length == 1)
             {
                 ButtonObjs[i].transform.GetChild(2).GetComponent<MeshFilter>().mesh = ModelMeshes[_consonantInfos[coda[0]].MeshIx];
+                ButtonObjs[i].transform.GetChild(2).localEulerAngles = new Vector3(90f, _consonantInfos[coda[0]].Rotation, 0f);
                 ButtonObjs[i].transform.GetChild(2).localPosition = new Vector3(_consonantInfos[onset].ExtrusionMainInfo.x, _consonantInfos[onset].ExtrusionMainInfo.y, _consonantInfos[onset].ExtrusionMainInfo.z);
                 ButtonObjs[i].transform.GetChild(3).gameObject.SetActive(false);
                 ButtonObjs[i].transform.GetChild(4).gameObject.SetActive(false);
@@ -150,12 +200,13 @@ public class ShapesScript : MonoBehaviour
                 ButtonObjs[i].transform.GetChild(2).gameObject.SetActive(false);
                 ButtonObjs[i].transform.GetChild(3).GetComponent<MeshFilter>().mesh = ModelMeshes[_consonantInfos[coda[0]].MeshIx];
                 ButtonObjs[i].transform.GetChild(4).GetComponent<MeshFilter>().mesh = ModelMeshes[_consonantInfos[coda[1]].MeshIx];
+                ButtonObjs[i].transform.GetChild(3).localEulerAngles = new Vector3(90f, _consonantInfos[coda[0]].Rotation, 0f);
+                ButtonObjs[i].transform.GetChild(4).localEulerAngles = new Vector3(90f, _consonantInfos[coda[1]].Rotation, 0f);
                 ButtonObjs[i].transform.GetChild(3).localPosition = new Vector3(_consonantInfos[onset].ExtrusionAInfo.x, _consonantInfos[onset].ExtrusionAInfo.y, _consonantInfos[onset].ExtrusionAInfo.z);
                 ButtonObjs[i].transform.GetChild(4).localPosition = new Vector3(_consonantInfos[onset].ExtrusionBInfo.x, _consonantInfos[onset].ExtrusionBInfo.y, _consonantInfos[onset].ExtrusionBInfo.z);
             }
-            var nucleus = syllableInfo[i].Nucleus;
-            Color color = _vowelInfos[nucleus];
-            ButtonObjs[i].transform.GetChild(0).GetComponent<MeshRenderer>().material.color = color;
+            Color color = _vowelInfos[syllableInfo[i].Nucleus];
+            ButtonObjs[i].transform.GetChild(1).GetComponent<MeshRenderer>().material.color = color;
             for (int j = 2; j <= 4; j++)
                 ButtonObjs[i].transform.GetChild(j).GetComponent<MeshRenderer>().material.color = color * 0.6f;
         }
@@ -179,7 +230,7 @@ public class ShapesScript : MonoBehaviour
 
     private IEnumerator Timer()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.75f);
         CheckInput(_input);
         _input = new List<int>();
     }
@@ -197,25 +248,42 @@ public class ShapesScript : MonoBehaviour
         bool correct = _chosenWord.Key[_strInput.Length] == ch;
         if (!correct)
         {
-            Debug.LogFormat("[Module Name #{0}] Inputted: {1} -> {2}. Expected {3}. Strike.", _moduleId, input.Join(""), ch, _chosenWord.Key[_strInput.Length]);
+            Debug.LogFormat("[Shapes #{0}] Inputted: {1} -> {2}. Expected {3}. Strike.", _moduleId, input.Join(""), ch, _chosenWord.Key[_strInput.Length]);
             _strInput = "";
+            StartCoroutine(StrikeTimer());
         }
         else
         {
-            Debug.LogFormat("[Module Name #{0}] Inputted: {1} -> {2}. Correct.", _moduleId, input.Join(""), ch);
+            Debug.LogFormat("[Shapes #{0}] Inputted: {1} -> {2}. Correct.", _moduleId, input.Join(""), ch);
             _strInput += ch;
         }
         bool solving = _strInput == _chosenWord.Key;
-        StartCoroutine(AnimateLetter(ch, correct, solving));
+        if (_textAnimation != null)
+            StopCoroutine(_textAnimation);
+        _textAnimation = StartCoroutine(AnimateLetter(ch, correct));
+        if (solving)
+            StartCoroutine(SolveTimer());
+    }
+
+    private IEnumerator StrikeTimer()
+    {
+        yield return new WaitForSeconds(1.25f);
+        Module.HandleStrike();
+    }
+
+    private IEnumerator SolveTimer()
+    {
+        yield return new WaitForSeconds(1.25f);
+        Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
+        _moduleSolved = true;
+        Module.HandlePass();
     }
 
     private char DecodeTwoButton(List<int> input)
     {
         if (input == null || input.Count == 0)
             return '?';
-
         string morse = input.Select(x => x == 0 ? '.' : '-').Join("");
-
         var morseTable = new Dictionary<string, char>()
         {
             {".-", 'A'},
@@ -295,10 +363,10 @@ public class ShapesScript : MonoBehaviour
                 return '?';
         }
         char result = grid[row][col];
-        return result == '?' ? '?' : result;
+        return result;
     }
 
-    private IEnumerator AnimateLetter(char letter, bool correct, bool solving)
+    private IEnumerator AnimateLetter(char letter, bool correct)
     {
         yield return null;
         var red = new Color32(255, 0, 0, 255);
@@ -306,9 +374,8 @@ public class ShapesScript : MonoBehaviour
         var color = correct ? green : red;
         LetterTM.text = letter.ToString();
         LetterTM.color = color;
-        var duration = 1.5f;
-        var holdTime = 1f;
-        var fadeTime = duration - holdTime;
+        var duration = 1.25f;
+        var holdTime = 0.85f;
         var elapsed = 0f;
         Audio.PlaySoundAtTransform("nyoom", transform);
         while (elapsed < duration)
@@ -320,15 +387,5 @@ public class ShapesScript : MonoBehaviour
         }
         LetterTM.transform.localScale = new Vector3(0.01f, 0.01f, 1000f);
         LetterTM.text = "";
-        if (!correct)
-        {
-            Module.HandleStrike();
-        }
-        if (solving)
-        {
-            _moduleSolved = true;
-            Module.HandlePass();
-            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
-        }
     }
 }
