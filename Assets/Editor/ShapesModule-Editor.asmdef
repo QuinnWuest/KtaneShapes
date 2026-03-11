@@ -1,0 +1,10 @@
+{
+  "name": "ShapesModule-Editor",
+  "references": [
+    "ShapesModule"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": []
+}
