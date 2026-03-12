@@ -43,7 +43,6 @@ public class Data
         ["ANALYSIS"] = P("Ə NA LI SIS"),
         ["ANCESTOR"] = P("AN SES TUR"),
         ["ANIMATED"] = P("A NI MEI TID"),
-        ["ANOREXIA"] = P("A NO REK SI Ə"),
         ["ANTELOPE"] = P("AN TI LOUP"),
         ["ANTIBODY"] = P("AN TI BO DI"),
         ["ANTIDOTE"] = P("AN TI DOUT"),
