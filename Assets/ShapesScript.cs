@@ -51,20 +51,20 @@ public class ShapesScript : MonoBehaviour
     };
     private static readonly Dictionary<Sound, Color32> _vowelInfos = new Dictionary<Sound, Color32>()
     {
-        [Sound.I] = new Color32(220, 20, 60, 255),
-        [Sound.II] = new Color32(77, 166, 255, 255),
-        [Sound.E] = new Color32(255, 215, 0, 255),
-        [Sound.A] = new Color32(255, 140, 0, 255),
-        [Sound.AA] = new Color32(139, 0, 0, 255),
-        [Sound.O] = new Color32(34, 139, 34, 255),
-        [Sound.U] = new Color32(60, 60, 240, 255),
-        [Sound.OO] = new Color32(0, 128, 128, 255),
-        [Sound.Ə] = new Color32(255, 137, 212, 255),
-        [Sound.AI] = new Color32(255, 0, 255, 255),
-        [Sound.AU] = new Color32(80, 235, 215, 255),
-        [Sound.OI] = new Color32(138, 43, 226, 255),
-        [Sound.OU] = new Color32(200, 170, 130, 255),
-        [Sound.EI] = new Color32(50, 205, 50, 255)
+        [Sound.I] = new Color32(220, 20, 60, 255),    // ɪ      bIg
+        [Sound.II] = new Color32(77, 166, 255, 255),  // iː     tEAch
+        [Sound.E] = new Color32(255, 215, 0, 255),    // ɛ      pEt
+        [Sound.A] = new Color32(255, 140, 0, 255),    // æ      cAt
+        [Sound.AA] = new Color32(139, 0, 0, 255),     // ɑː     fAther
+        [Sound.U] = new Color32(34, 139, 34, 255),    // ʌ      bUtter
+        [Sound.OO] = new Color32(60, 60, 240, 255),   // ʊ      bOOk
+        [Sound.UU] = new Color32(0, 128, 128, 255),   // uː     fOOd
+        [Sound.AI] = new Color32(255, 0, 255, 255),   // aɪ     lIme
+        [Sound.AU] = new Color32(80, 235, 215, 255),  // aʊ     clOWn
+        [Sound.OI] = new Color32(138, 43, 226, 255),  // ɔɪ     nOIse
+        [Sound.OU] = new Color32(200, 170, 130, 255), // oʊ     bOAt
+        [Sound.EI] = new Color32(50, 205, 50, 255),   // eɪ     clAIm
+        [Sound.Ə] = new Color32(255, 137, 212, 255),  // ə      Among
     };
 
     private static readonly Dictionary<Sound, string[]> _infoForLogging = new Dictionary<Sound, string[]>()
@@ -99,9 +99,9 @@ public class ShapesScript : MonoBehaviour
         [Sound.E] = new[] { "a yellow" },
         [Sound.A] = new[] { "an orange" },
         [Sound.AA] = new[] { "a maroon" },
-        [Sound.O] = new[] { "a green" },
-        [Sound.U] = new[] { "a blue" },
-        [Sound.OO] = new[] { "a teal" },
+        [Sound.U] = new[] { "a green" },
+        [Sound.OO] = new[] { "a blue" },
+        [Sound.UU] = new[] { "a teal" },
         [Sound.Ə] = new[] { "a pink" },
         [Sound.AI] = new[] { "a magenta" },
         [Sound.AU] = new[] { "a cyan" },
@@ -138,7 +138,6 @@ public class ShapesScript : MonoBehaviour
         for (int i = 0; i < _buttonCount; i++)
             ButtonSels[i].OnInteract += ButtonPress(i);
     }
-
 
     private void SetButtons(Syllable[] syllableInfo)
     {

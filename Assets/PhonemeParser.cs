@@ -44,11 +44,10 @@ namespace Syl
             ["E"] = Sound.E,
             ["A"] = Sound.A,
             ["AA"] = Sound.AA,
-            ["O"] = Sound.O,
-            ["OO"] = Sound.OO,
             ["U"] = Sound.U,
+            ["OO"] = Sound.OO,
+            ["UU"] = Sound.UU,
             ["Ə"] = Sound.Ə,
-
             ["AI"] = Sound.AI,
             ["AU"] = Sound.AU,
             ["OI"] = Sound.OI,
@@ -65,9 +64,9 @@ namespace Syl
                 case Sound.E:
                 case Sound.A:
                 case Sound.AA:
-                case Sound.O:
-                case Sound.OO:
                 case Sound.U:
+                case Sound.UU:
+                case Sound.OO:
                 case Sound.Ə:
                 case Sound.AI:
                 case Sound.AU:
@@ -87,10 +86,10 @@ namespace Syl
             if (string.IsNullOrEmpty(input))
                 return new Syllable[0];
 
-            var syllableTexts = input.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var syllableTexts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             var result = new List<Syllable>();
 
-            foreach ( var s in syllableTexts)
+            foreach (var s in syllableTexts)
             {
                 var phonemes = Tokenize(s);
                 result.Add(BuildSyllable(phonemes, s));

@@ -9,7 +9,7 @@
     L, R,
     W, Y,
 
-    I, II, E, A, AA, O, U, OO, Ə,
+    I, II, E, A, AA, U, OO, UU, Ə,
 
     AI, AU, OI, OU, EI
 }
