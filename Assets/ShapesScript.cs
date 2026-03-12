@@ -81,10 +81,10 @@ public class ShapesScript : MonoBehaviour
         [Sound.ZH] = new[] { "heart", "a heart" },
         [Sound.CH] = new[] { "club", "a club" },
         [Sound.J] = new[] { "diamond", "a diamond" },
-        [Sound.F] = new[] { "top-right and bottom-left circle pair", "a top-right and bottom-left circle pair" },
-        [Sound.V] = new[] { "top-left and bottom-right circle pair", "a top-left and bottom-right circle pair" },
-        [Sound.S] = new[] { "top-right and bottom-left square pair", "a top-right and bottom-left square pair" },
-        [Sound.Z] = new[] { "top-left and bottom-right square pair", "a top-left and bottom-right square pair" },
+        [Sound.F] = new[] { "top-right/bottom-left circle pair", "a top-right/bottom-left circle pair" },
+        [Sound.V] = new[] { "top-left/bottom-right circle pair", "a top-left/bottom-right circle pair" },
+        [Sound.S] = new[] { "top-right/bottom-left square pair", "a top-right/bottom-left square pair" },
+        [Sound.Z] = new[] { "top-left/bottom-right square pair", "a top-left/bottom-right square pair" },
         [Sound.H] = new[] { "speech bubble", "a speech bubble" },
         [Sound.M] = new[] { "4-pointed star", "a 4-pointed star" },
         [Sound.N] = new[] { "5-pointed star", "a 5-pointed star" },
@@ -123,19 +123,11 @@ public class ShapesScript : MonoBehaviour
         _moduleId = _moduleIdCounter++;
         _chosenWord = Data._wordList.PickRandom();
 
-        if (false)
-        {
-            var tempStr = "PICTURED";
-            var x = new KeyValuePair<string, Syllable[]>(tempStr, Data._wordList[tempStr]);
-            _chosenWord = x;
-        }
-
         _buttonCount = _chosenWord.Value.Length;
-
         var syllables = _chosenWord.Value;
         SetButtons(syllables);
-        // Debug.LogFormat("[Shapes #{0}] Chosen word: {1}", _moduleId, _chosenWord.Key);
-        // Debug.LogFormat("[Shapes #{0}] Syllables: {1}", _moduleId, _chosenWord.Value.Join(" "));
+        Debug.LogFormat("[Shapes #{0}] Chosen word: {1}", _moduleId, _chosenWord.Key);
+        Debug.LogFormat("[Shapes #{0}] Syllables: {1}", _moduleId, _chosenWord.Value.Join(" "));
 
         for (int i = 0; i < syllables.Length; i++)
         {

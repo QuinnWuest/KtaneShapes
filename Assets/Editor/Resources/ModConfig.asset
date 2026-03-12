@@ -14,17 +14,11 @@ MonoBehaviour:
   id: ShapesModule
   title: Shapes
   author: Quinn Wuest
-  description: 'Nowadays it seems the module printing factory is spitting out things
-    in all shapes and sizes.
-
-
-    Inspired by the [u]TEAMMATE[/u] puzzle hunt.
-
-
-    Made by Quinn Wuest.
-
-
-    Ongoing manual challenge!'
+  description: "Nowadays it seems the module printing factory is spitting out things
+    in all shapes and sizes.\n\nInspired by the [u]TEAMMATE[/u] puzzle hunt.\n\nMade
+    by Quinn Wuest.\n\nManual challenge module! Try solving this module without the
+    help of using the manual.\n\n[url=https://ktane.timwi.de/HTML/Shapes.html]Manual
+    HTML[/url]\r\n[url=https://ktane.timwi.de/PDF/Shapes.pdf]Manual PDF[/url]"
   version: 1.0
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 935c3c6a0eb42ab4c923f0e0cf6556b9, type: 3}
