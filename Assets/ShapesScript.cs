@@ -118,7 +118,8 @@ public class ShapesScript : MonoBehaviour
     private Coroutine _timer;
     private Coroutine _textAnimation;
     private int _buttonCount;
-    private bool _timerActivated;
+    private bool _submissionTimerActivated;
+    private bool _isAnimationRunning;
 
     private void Awake()
     {
@@ -224,15 +225,16 @@ public class ShapesScript : MonoBehaviour
     private IEnumerator Timer()
     {
         yield return new WaitForSeconds(0.75f);
-        _timerActivated = true;
+        _submissionTimerActivated = true;
     }
 
     private void Update()
     {
-        if (!_timerActivated)
+        if (!_submissionTimerActivated)
             return;
         CheckInput(_input);
-        _timerActivated = false;
+        _input = new List<int>();
+        _submissionTimerActivated = false;
     }
 
     private void CheckInput(List<int> input)
@@ -248,13 +250,13 @@ public class ShapesScript : MonoBehaviour
         bool correct = _chosenWord.Key[_strInput.Length] == ch;
         if (!correct)
         {
-            Debug.LogFormat("[Shapes #{0}] Inputted: {1} -> {2}. Expected {3}. Strike.", _moduleId, input.Join(""), ch, _chosenWord.Key[_strInput.Length]);
+            Debug.LogFormat("[Shapes #{0}] Inputted: {1} -> {2}. Expected {3}. Strike.", _moduleId, input.Select(i => i + 1).Join(""), ch, _chosenWord.Key[_strInput.Length]);
             _strInput = "";
             StartCoroutine(StrikeTimer());
         }
         else
         {
-            Debug.LogFormat("[Shapes #{0}] Inputted: {1} -> {2}. Correct.", _moduleId, input.Join(""), ch);
+            Debug.LogFormat("[Shapes #{0}] Inputted: {1} -> {2}. Correct.", _moduleId, input.Select(i => i + 1).Join(""), ch);
             _strInput += ch;
         }
         bool solving = _strInput == _chosenWord.Key;
@@ -368,7 +370,7 @@ public class ShapesScript : MonoBehaviour
 
     private IEnumerator AnimateLetter(char letter, bool correct)
     {
-        yield return null;
+        _isAnimationRunning = true;
         var red = new Color32(255, 0, 0, 255);
         var green = new Color32(0, 255, 0, 255);
         var color = correct ? green : red;
@@ -387,7 +389,7 @@ public class ShapesScript : MonoBehaviour
         }
         LetterTM.transform.localScale = new Vector3(0.01f, 0.01f, 1000f);
         LetterTM.text = "";
-        _input = new List<int>();
+        _isAnimationRunning = false;
     }
 
 #pragma warning disable 0414
@@ -437,9 +439,9 @@ public class ShapesScript : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 if (_timer != null)
                     StopCoroutine(_timer);
-                _timerActivated = true;
+                _submissionTimerActivated = true;
                 yield return null;
-                while (_input.Count != 0)
+                while (_isAnimationRunning)
                     yield return null;
                 yield return new WaitForSeconds(0.1f);
             }
@@ -457,9 +459,9 @@ public class ShapesScript : MonoBehaviour
         {
             if (_timer != null)
                 StopCoroutine(_timer);
-            _timerActivated = true;
+            _submissionTimerActivated = true;
             yield return null;
-            while (_input.Count != 0 && !_moduleSolved)
+            while (_isAnimationRunning && !_moduleSolved)
                 yield return null;
         }
         while (!_moduleSolved)
@@ -482,9 +484,9 @@ public class ShapesScript : MonoBehaviour
         }
         if (_timer != null)
             StopCoroutine(_timer);
-        _timerActivated = true;
+        _submissionTimerActivated = true;
         yield return null;
-        while (_input.Count != 0 && !_moduleSolved)
+        while (_isAnimationRunning && !_moduleSolved)
             yield return null;
         yield return new WaitForSeconds(0.1f);
     }
